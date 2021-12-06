@@ -18,16 +18,11 @@ app.use(express.static("public"));
 app.use(logger("dev"));
 
 //connecting to mongo and making sure its working
-mongoose.connect(
-    process.env.MONGODB_URI || 'mongodb://localhost/project1',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false
-    }
-  );
-  
+mongoose.connect(process.env.ATLAS_URI || "mongodb://localhost/workout");
+const db = mongoose.connection
+db.on('error', (error) => console.error(error))
+db.once('open', () => console.log('Connected to Database'))
+
 
 //route connections
 app.use('/api/workouts', require("./routes/apiRoutes"));
